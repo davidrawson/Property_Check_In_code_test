@@ -26,6 +26,8 @@ class CreateCheckInsLists
 
         // shoud this be in a try/catch
         $inputFile = "./" . $filename;
+
+        echo $inputFile;
         $csvFile = file($inputFile);
 
         foreach ($csvFile as $line) {

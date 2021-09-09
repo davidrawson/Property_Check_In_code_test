@@ -1,7 +1,8 @@
 <?php
 // namespace lyles;
 
-class Booking {
+class Booking 
+{
   
     protected int $tenant_id;
     protected string $first_name;
