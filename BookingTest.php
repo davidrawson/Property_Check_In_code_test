@@ -13,10 +13,10 @@ final class BookingTest extends TestCase
      *
      * @return void
      */
-    public function testIsValidBookingReturnsFalseForInvalidDate()
+    public function testIsInvalidBookingReturnsFalseForValidDate()
     {
-        $booking = new Booking("25", "Jeannine", "Parfitt", "jparfitto@squidoo.com", "559-211-8333", "30/09/2021", "11:00", "29");
-        $this->assertFalse($booking->isValidBooking());
+        $booking = new Booking("25", "Jeannine", "Parfitt", "jparfitto@squidoo.com", "559-211-8333", "13/09/2021", "11:00", "29");
+        $this->assertFalse($booking->isInvalidBooking());
     }
     
     /**
@@ -24,10 +24,10 @@ final class BookingTest extends TestCase
      *
      * @return void
      */
-    public function testIsValidBookingReturnsTrueForValidDate()
+    public function testIsInvalidBookingReturnsTrueForInvalidDate()
     {
-        $booking = new Booking("25", "Jeannine", "Parfitt", "jparfitto@squidoo.com", "559-211-8333", "13/09/2021", "11:00", "29");
-        $this->assertTrue($booking->isValidBooking());
+        $booking = new Booking("25", "Jeannine", "Parfitt", "jparfitto@squidoo.com", "559-211-8333", "30/09/2021", "11:00", "29");
+        $this->assertTrue($booking->isInvalidBooking());
     }
 }
 

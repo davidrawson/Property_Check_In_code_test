@@ -29,7 +29,7 @@ class Booking
         $this->email = $email;
         $this->phone_no = $phone_no;
         $dateTime = DateTime::createFromFormat('d/m/Y H:i', $date . " " . $time);  // these do need to be converted to DateTime here
-        var_dump($dateTime);
+        // var_dump($dateTime);
         $this->dateTime = $dateTime;
         $this->property_id = $property_id;
 
@@ -46,13 +46,13 @@ class Booking
         // var_dump($this->dateTime);
     }
 
-    public function isValidBooking()
+    public function isInvalidBooking()
     {
-        echo $this->dateTime->format('d');
-        echo $this->dateTime->format('t'); 
+        // echo $this->dateTime->format('d');
+        // echo $this->dateTime->format('t'); 
 
         // need to use checkdate, which meadns they need to be valid DateTime objects
-        if($this->dateTime->format('d') != $this->dateTime->format('t'))
+        if($this->dateTime->format('d') == $this->dateTime->format('t'))
         {
             return true;
         }
@@ -78,7 +78,9 @@ class Booking
         }
 
         // This assumes up to half and hour to do the check-in, and half an hour travelling time to next appointment.
-        if($this->dateTime->diff($nextBooking->getDateTime()) > 1)
+
+        // except this line is trash. It does not work
+        if($this->dateTime->modify('+ 1 hour') >= $nextBooking->getDateTime())
         {
             return false;
         }
