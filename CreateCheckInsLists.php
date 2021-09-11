@@ -1,8 +1,7 @@
 <?php
 
-use function PHPUnit\Framework\isEmpty;
-
 include "./Booking.php";
+include "./BookingList.php";
 
 class CreateCheckInsLists
 {
@@ -40,15 +39,31 @@ class CreateCheckInsLists
             $bookings[] = $booking;
         }
         
-        usort($bookings, array(self::class, "dateComparator"));
+        $sortedBookings = self::sortBookings($bookings);
 
-        $invalidBookingList =[];
+        self::allocateBookings($sortedBookings);
+    }
+
+    private static function sortBookings($bookings)
+    {
+        usort($bookings, array(self::class, "dateComparator"));
+        return $bookings;
+    }
+
+    private static function dateComparator($object1, $object2)
+    {
+        return $object1->getDateTime() > $object2->getDateTime();
+    }
+
+    private static function allocateBookings($sortedBookings)
+    {
+        $invalidBookingList = [];
         $sortedList1 = [];
         $sortedList2 = [];
         $sortedList3 = [];
         $rebookList = [];
 
-        foreach($bookings as $booking) {
+        foreach($sortedBookings as $booking) {
             if($booking->isInvalidBooking()) {
                 $invalidBookingList[] = $booking;
                 continue;
@@ -60,7 +75,8 @@ class CreateCheckInsLists
             }
 
             if(!$booking->isBookingConflict(end($sortedList1))) {
-                $sortedList1[] = $booking; 
+                $sortedList1[] = $booking;
+                continue; 
             } else {
                 if(empty($sortedList2)) {
                     $sortedList2[] = $booking;
@@ -72,28 +88,36 @@ class CreateCheckInsLists
                     } else {
                         if(empty($sortedList3)) {
                             $sortedList3[] = $booking;
+                            continue;
                         } else {
                             if(!$booking->isBookingConflict(end($sortedList3))) {
                                 $sortedList3[] = $booking;
+                                continue;
                             } else {
                                 $rebookList[] = $booking;
+                                continue;
                             }
                         }
                     }
                 }
                 $sortedList1[] = $booking;
             }
+
         }
 
-        var_dump($sortedList1);
-        // var_dump($sortedList2);
-        // var_dump($sortedList3);
+        self::createListFiles($sortedList1, "_BookingList1.csv");
+        self::createListFiles($sortedList2, "_BookingList2.csv");
+        self::createListFiles($sortedList3, "_BookingList3.csv");
+        self::createListFiles($invalidBookingList, "_InvalidBookingList1.csv");
+        self::createListFiles($rebookList, "_RebookList1.csv");
     }
 
-    private static function dateComparator($object1, $object2)
+    private static function createListFiles($list, $fileSuffix)
     {
-        return $object1->getDateTime() > $object2->getDateTime();
+        if(!empty($list)) {
+            $filename = date("d-m-Y") . $fileSuffix;
+            $bookingList = new BookingList($list, $filename);
+            $bookingList->createCsvFile();  
+        }
     }
 }
-
-?>
