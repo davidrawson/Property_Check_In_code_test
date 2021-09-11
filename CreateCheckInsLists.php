@@ -13,48 +13,74 @@ class CreateCheckInsLists
      */
     public static function execute(string $filename)
     {
-        // This 'die' message would be logged somewhere irl.
+        // This would normally be logging an error rather than dying.
         if (!isset($filename)) {
-        die("Error, no csv filename provided.");
+            die("Error, no csv filename provided.");
         }
 
-        // should this be in a try/catch
         $inputFile = "./" . $filename;
 
-        $csvFile = file($inputFile);
+        try {
+            $csvFile = file($inputFile);
 
-        foreach ($csvFile as $line) {
-            $lineArray = str_getcsv($line);
+            foreach ($csvFile as $line) {
+                $lineArray = str_getcsv($line);
 
-            $tenant_id = $lineArray[0];
-            $first_name = $lineArray[1];
-            $last_name = $lineArray[2];
-            $email = $lineArray[3];
-            $phone_no = $lineArray[4];
-            $date = $lineArray[5];
-            $time = $lineArray[6];
-            $property_id = $lineArray[7];
+                $tenant_id = $lineArray[0];
+                $first_name = $lineArray[1];
+                $last_name = $lineArray[2];
+                $email = $lineArray[3];
+                $phone_no = $lineArray[4];
+                $date = $lineArray[5];
+                $time = $lineArray[6];
+                $property_id = $lineArray[7];
 
-            $booking = new Booking($tenant_id, $first_name, $last_name, $email, $phone_no, $date, $time, $property_id);
-            $bookings[] = $booking;
+                $booking = new Booking($tenant_id, $first_name, $last_name, $email, $phone_no, $date, $time, $property_id);
+                $bookings[] = $booking;
+            }
+        } catch (Exception $e) {
+            echo $e->getMessage();
+        } finally {
+            if(is_resource($csvFile)) {
+                fclose($csvFile);
+            }
         }
-        
+
         $sortedBookings = self::sortBookings($bookings);
 
         self::allocateBookings($sortedBookings);
     }
-
+    
+    /**
+     * sortBookings
+     *
+     * @param  Booking[] $bookings
+     * @return void
+     */
     private static function sortBookings($bookings)
     {
         usort($bookings, array(self::class, "dateComparator"));
         return $bookings;
     }
-
+    
+    /**
+     * dateComparator
+     *
+     * @param  Booking $object1
+     * @param  Booking $object2
+     * @return void
+     */
     private static function dateComparator($object1, $object2)
     {
         return $object1->getDateTime() > $object2->getDateTime();
     }
-
+    
+    /**
+     * allocateBookings
+     *
+     * @param  Booking[] $sortedBookings
+     * @return void
+     */
     private static function allocateBookings($sortedBookings)
     {
         $invalidBookingList = [];
@@ -102,7 +128,6 @@ class CreateCheckInsLists
                 }
                 $sortedList1[] = $booking;
             }
-
         }
 
         self::createListFiles($sortedList1, "_BookingList1.csv");
@@ -111,7 +136,14 @@ class CreateCheckInsLists
         self::createListFiles($invalidBookingList, "_InvalidBookingList1.csv");
         self::createListFiles($rebookList, "_RebookList1.csv");
     }
-
+    
+    /**
+     * createListFiles
+     *
+     * @param  Booking[] $list
+     * @param  string $fileSuffix
+     * @return void
+     */
     private static function createListFiles($list, $fileSuffix)
     {
         if(!empty($list)) {

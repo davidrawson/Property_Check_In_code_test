@@ -1,16 +1,31 @@
 <?php
 
+/**
+ * BookingList
+ */
 class BookingList
 {
     private $bookings = [];
     private string $filename;
-
+    
+    /**
+     * __construct
+     *
+     * @param  Booking[] $bookings
+     * @param  string $filename
+     * @return void
+     */
     public function __construct(array $bookings, $filename) 
     {
         $this->bookings = $bookings;
         $this->filename = $filename;
     }
-
+    
+    /**
+     * createCsvFile
+     *
+     * @return void
+     */
     public function createCsvFile()
     {
         try {
@@ -35,7 +50,7 @@ class BookingList
             echo $e->getMessage();
         } finally {
             if(is_resource($file)) {
-              fclose($file);
+                fclose($file);
             }
         }
     }

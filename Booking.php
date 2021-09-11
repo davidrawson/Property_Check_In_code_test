@@ -1,8 +1,10 @@
 <?php
 
+/**
+ * Booking
+ */
 class Booking 
 {
-  
     protected int $tenant_id;
     protected string $first_name;
     protected string $last_name;
@@ -10,13 +12,18 @@ class Booking
     protected string $phone_no;
     protected DateTime $dateTime;
     protected int $property_id;
-
-    // protected int $y;
-    
+        
     /**
      * __construct
      *
-     * @param  mixed $booking
+     * @param  string $tenant_id
+     * @param  string $first_name
+     * @param  string $last_name
+     * @param  string $email
+     * @param  string $phone_no
+     * @param  string $date
+     * @param  string $time
+     * @param  string $property_id
      * @return void
      */
     public function __construct($tenant_id, $first_name, $last_name, $email, $phone_no, $date, $time, $property_id) 
@@ -30,43 +37,83 @@ class Booking
         $this->dateTime = $dateTime;
         $this->property_id = $property_id;
     }
-
-    public function getTenantId()
+        
+    /**
+     * getTenantId
+     *
+     * @return string
+     */
+    public function getTenantId() :string
     {
         return $this->tenant_id;
     }
-    
-    public function getFirstName()
+            
+    /**
+     * getFirstName
+     *
+     * @return string
+     */
+    public function getFirstName() :string
     {
         return $this->first_name;
     }
-    
-    public function getLastName()
+            
+    /**
+     * getLastName
+     *
+     * @return string
+     */
+    public function getLastName() :string
     {
         return $this->last_name;
     }
-    
-    public function getEmail()
+            
+    /**
+     * getEmail
+     *
+     * @return string
+     */
+    public function getEmail() :string
     {
         return $this->email;
     }
-    
-    public function getPhoneNo()
+        
+    /**
+     * getPhoneNo
+     *
+     * @return string
+     */
+    public function getPhoneNo() :string
     {
         return $this->phone_no;
     }
-
-    public function getDateTime()
+    
+    /**
+     * getDateTime
+     *
+     * @return DateTime
+     */
+    public function getDateTime() :DateTime
     {
         return $this->dateTime;
     }
-    
-    public function getPropertyId()
+        
+    /**
+     * getPropertyId
+     *
+     * @return string
+     */
+    public function getPropertyId() :string
     {
         return $this->property_id;
     }
-
-    public function isInvalidBooking()
+    
+    /**
+     * isInvalidBooking
+     *
+     * @return bool
+     */
+    public function isInvalidBooking() :bool
     {
         if($this->dateTime->format('d') == $this->dateTime->format('t'))
         {
@@ -75,30 +122,29 @@ class Booking
 
         return false;
     }
-
-    public function isBookingConflict(Booking $prevBooking)
+    
+    /**
+     * isBookingConflict
+     *
+     * @param  Booking $prevBooking
+     * @return bool
+     */
+    public function isBookingConflict(Booking $prevBooking) :bool
     {
-        var_dump($prevBooking->getPropertyId(), "next");
-        var_dump($this->property_id, "this");
-        
         if($prevBooking->getDateTime() == $this->dateTime && $prevBooking->getPropertyId() == $this->property_id)
         {
             return false;
         }
 
-        // $minutesDiff=0;
         // This assumes up to half and hour to do the check-in, and half an hour travelling time to next appointment.
         $diff = date_diff($this->dateTime, $prevBooking->getDateTime());
         $minutesDiff = ($diff->h * 60) + $diff->m;
-        echo($minutesDiff);
 
         if($minutesDiff >= 60)
         {
-            echo($this->first_name);
-
             return false;
         }
-        // think, is there no other circumstance?
+
         return true;
     }
 }
