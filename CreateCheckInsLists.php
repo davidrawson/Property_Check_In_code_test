@@ -11,7 +11,7 @@ class CreateCheckInsLists
      * @param  string $filename
      * @return void
      */
-    public static function execute(string $filename)
+    public static function execute(string $filename) :void
     {
         // This would normally be logging an error rather than dying.
         if (!isset($filename)) {
@@ -51,13 +51,14 @@ class CreateCheckInsLists
         self::allocateBookings($sortedBookings);
     }
     
+       
     /**
      * sortBookings
      *
      * @param  Booking[] $bookings
-     * @return void
+     * @return Booking[]
      */
-    private static function sortBookings($bookings)
+    private static function sortBookings($bookings) :array
     {
         usort($bookings, array(self::class, "dateComparator"));
         return $bookings;
