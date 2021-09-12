@@ -6,7 +6,6 @@ Install PHPUnit in the directory.
 
 Example of CLI command to run the class 
 
-`CreateCheckInsLists.php`
 `php -r 'include "CreateCheckInsLists.php"; CreateCheckInsLists::execute("application_forms.csv");'`
 
 ## Assumptions
