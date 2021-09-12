@@ -12,6 +12,7 @@ class Booking
     protected string $phone_no;
     protected DateTime $dateTime;
     protected int $property_id;
+    protected const MINUTES_IN_HOUR = 60;
         
     /**
      * __construct
@@ -107,13 +108,13 @@ class Booking
     {
         return $this->property_id;
     }
-    
+        
     /**
-     * isInvalidBooking
+     * isLastDayOfMonth
      *
      * @return bool
      */
-    public function isInvalidBooking(): bool
+    public function isLastDayOfMonth(): bool
     {
         if ($this->dateTime->format('d') == $this->dateTime->format('t'))
         {
@@ -138,9 +139,9 @@ class Booking
 
         // This assumes up to half and hour to do the check-in, and half an hour travelling time to next appointment.
         $diff = date_diff($this->dateTime, $prevBooking->getDateTime());
-        $minutesDiff = ($diff->h * 60) + $diff->m;
+        $minutesDiff = ($diff->h * self::MINUTES_IN_HOUR) + $diff->m;
 
-        if ($minutesDiff >= 60)
+        if ($minutesDiff >= self::MINUTES_IN_HOUR)
         {
             return false;
         }

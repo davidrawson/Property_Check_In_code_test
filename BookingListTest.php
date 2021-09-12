@@ -1,8 +1,11 @@
 <?php
 use PHPUnit\Framework\TestCase;
-include "./BookingList.php";
-include "./Booking.php";
+require "./BookingList.php";
+require "./Booking.php";
 
+/**
+ * BookingListTest
+ */
 final class BookingListTest extends TestCase
 {    
     /**

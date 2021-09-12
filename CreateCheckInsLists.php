@@ -3,6 +3,9 @@
 include "./Booking.php";
 include "./BookingList.php";
 
+/**
+ * CreateCheckInsLists
+ */
 class CreateCheckInsLists
 {
     /**
@@ -57,7 +60,7 @@ class CreateCheckInsLists
      * @param  Booking[] $bookings
      * @return Booking[]
      */
-    private static function sortBookings($bookings): array
+    public static function sortBookings($bookings): array
     {
         usort($bookings, array(self::class, "dateComparator"));
         return $bookings;
@@ -90,7 +93,7 @@ class CreateCheckInsLists
         $rebookList = [];
 
         foreach ($sortedBookings as $booking) {
-            if ($booking->isInvalidBooking()) {
+            if ($booking->isLastDayOfMonth()) {
                 $invalidBookingList[] = $booking;
                 continue;
             }
