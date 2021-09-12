@@ -4,7 +4,15 @@ Install PHPUnit in the directory.
 
 `composer require --dev phpunit/phpunit ^9`
 
-Example of CLI command to run the class 
+
+Run tests
+
+`phpunit BookingTest.php`
+
+`phpunit BookingListTest.php`
+
+
+CLI command to run the class 
 
 `php -r 'include "CreateCheckInsLists.php"; CreateCheckInsLists::execute("application_forms.csv");'`
 
