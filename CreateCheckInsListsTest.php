@@ -25,6 +25,22 @@ final class CreateCheckInsListsTest extends TestCase
     }
     
     /**
+     * testAllocateBookingsNoConflictPutsBookingInFirstList
+     *
+     * @return void
+     */
+    public function testAllocateBookingsNoConflictPutsBookingInFirstList(): void
+    {
+        $booking1 = new Booking("25", "Jeannine", "Parfitt", "jparfitto@squidoo.com", "559-211-8333", "20/09/2021", "11:00", "29");
+        $booking2 = new Booking("26", "Peannine", "Jarfitt", "pjarfitto@squidoo.com", "559-8333-211", "20/09/2021", "12:00", "27");
+        $bookings = [$booking1, $booking2];
+
+        $lists = CreateCheckInsLists::allocateBookings($bookings);
+
+        $this->assertEquals($lists['sortedList1'][1], $booking2);
+    }
+    
+    /**
      * testAllocateBookingsConflictPutsBookingInSecondList
      *
      * @return void
