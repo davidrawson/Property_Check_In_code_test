@@ -50,8 +50,7 @@ class CreateCheckInsLists
 
         self::allocateBookings($sortedBookings);
     }
-    
-       
+        
     /**
      * sortBookings
      *
@@ -63,8 +62,7 @@ class CreateCheckInsLists
         usort($bookings, array(self::class, "dateComparator"));
         return $bookings;
     }
-    
-       
+      
     /**
      * dateComparator
      *
