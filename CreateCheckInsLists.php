@@ -51,7 +51,13 @@ class CreateCheckInsLists
 
         $sortedBookings = self::sortBookings($bookings);
 
-        self::allocateBookings($sortedBookings);
+        $lists = self::allocateBookings($sortedBookings);
+
+        self::createListFiles($lists['sortedList1'], "_BookingList1.csv");
+        self::createListFiles($lists['sortedList2'], "_BookingList2.csv");
+        self::createListFiles($lists['sortedList3'], "_BookingList3.csv");
+        self::createListFiles($lists['invalidBookingList'], "_InvalidBookingList1.csv");
+        self::createListFiles($lists['rebookList'], "_RebookList1.csv");
     }
         
     /**
@@ -77,14 +83,14 @@ class CreateCheckInsLists
     {
         return $object1->getDateTime() > $object2->getDateTime();
     }
-    
+        
     /**
      * allocateBookings
      *
      * @param  Booking[] $sortedBookings
-     * @return void
+     * @return array
      */
-    private static function allocateBookings($sortedBookings): void
+    public static function allocateBookings($sortedBookings): array
     {
         $invalidBookingList = [];
         $sortedList1 = [];
@@ -133,11 +139,15 @@ class CreateCheckInsLists
             }
         }
 
-        self::createListFiles($sortedList1, "_BookingList1.csv");
-        self::createListFiles($sortedList2, "_BookingList2.csv");
-        self::createListFiles($sortedList3, "_BookingList3.csv");
-        self::createListFiles($invalidBookingList, "_InvalidBookingList1.csv");
-        self::createListFiles($rebookList, "_RebookList1.csv");
+        $lists = [
+            'sortedList1' => $sortedList1,
+            'sortedList2' => $sortedList2,
+            'sortedList3' => $sortedList3,
+            'invalidBookingList' => $invalidBookingList,
+            'rebookList' => $rebookList
+        ];
+
+        return $lists;
     }
     
     /**
