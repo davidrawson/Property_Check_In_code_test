@@ -11,7 +11,7 @@ class CreateCheckInsLists
      * @param  string $filename
      * @return void
      */
-    public static function execute(string $filename) :void
+    public static function execute(string $filename): void
     {
         // This would normally be logging an error rather than dying.
         if (!isset($filename)) {
@@ -41,7 +41,7 @@ class CreateCheckInsLists
         } catch (Exception $e) {
             echo $e->getMessage();
         } finally {
-            if(is_resource($csvFile)) {
+            if (is_resource($csvFile)) {
                 fclose($csvFile);
             }
         }
@@ -58,20 +58,21 @@ class CreateCheckInsLists
      * @param  Booking[] $bookings
      * @return Booking[]
      */
-    private static function sortBookings($bookings) :array
+    private static function sortBookings($bookings): array
     {
         usort($bookings, array(self::class, "dateComparator"));
         return $bookings;
     }
     
+       
     /**
      * dateComparator
      *
      * @param  Booking $object1
      * @param  Booking $object2
-     * @return void
+     * @return bool
      */
-    private static function dateComparator($object1, $object2)
+    private static function dateComparator($object1, $object2): bool
     {
         return $object1->getDateTime() > $object2->getDateTime();
     }
@@ -82,7 +83,7 @@ class CreateCheckInsLists
      * @param  Booking[] $sortedBookings
      * @return void
      */
-    private static function allocateBookings($sortedBookings)
+    private static function allocateBookings($sortedBookings): void
     {
         $invalidBookingList = [];
         $sortedList1 = [];
@@ -90,34 +91,34 @@ class CreateCheckInsLists
         $sortedList3 = [];
         $rebookList = [];
 
-        foreach($sortedBookings as $booking) {
-            if($booking->isInvalidBooking()) {
+        foreach ($sortedBookings as $booking) {
+            if ($booking->isInvalidBooking()) {
                 $invalidBookingList[] = $booking;
                 continue;
             }
 
-            if(empty($sortedList1)) {
+            if (empty($sortedList1)) {
                 $sortedList1[] = $booking;
                 continue;
             }
 
-            if(!$booking->isBookingConflict(end($sortedList1))) {
+            if (!$booking->isBookingConflict(end($sortedList1))) {
                 $sortedList1[] = $booking;
                 continue; 
             } else {
-                if(empty($sortedList2)) {
+                if (empty($sortedList2)) {
                     $sortedList2[] = $booking;
                     continue;
                 } else {
-                    if(!$booking->isBookingConflict(end($sortedList2))) {
+                    if (!$booking->isBookingConflict(end($sortedList2))) {
                         $sortedList2[] = $booking;
                         continue;
                     } else {
-                        if(empty($sortedList3)) {
+                        if (empty($sortedList3)) {
                             $sortedList3[] = $booking;
                             continue;
                         } else {
-                            if(!$booking->isBookingConflict(end($sortedList3))) {
+                            if (!$booking->isBookingConflict(end($sortedList3))) {
                                 $sortedList3[] = $booking;
                                 continue;
                             } else {
@@ -145,9 +146,9 @@ class CreateCheckInsLists
      * @param  string $fileSuffix
      * @return void
      */
-    private static function createListFiles($list, $fileSuffix)
+    private static function createListFiles($list, $fileSuffix): void
     {
-        if(!empty($list)) {
+        if (!empty($list)) {
             $filename = date("d-m-Y") . $fileSuffix;
             $bookingList = new BookingList($list, $filename);
             $bookingList->createCsvFile();  

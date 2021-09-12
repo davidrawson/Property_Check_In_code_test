@@ -15,7 +15,7 @@ class BookingList
      * @param  string $filename
      * @return void
      */
-    public function __construct(array $bookings, $filename) 
+    public function __construct(array $bookings, $filename)
     {
         $this->bookings = $bookings;
         $this->filename = $filename;
@@ -26,12 +26,12 @@ class BookingList
      *
      * @return void
      */
-    public function createCsvFile()
+    public function createCsvFile(): void
     {
         try {
             $file = fopen($this->filename, 'w');
             
-            foreach($this->bookings as $booking) {
+            foreach ($this->bookings as $booking) {
                 $line = [
                     $booking->getTenantId(),
                     $booking->getFirstName(),
@@ -49,7 +49,7 @@ class BookingList
         } catch (Exception $e) {
             echo $e->getMessage();
         } finally {
-            if(is_resource($file)) {
+            if (is_resource($file)) {
                 fclose($file);
             }
         }

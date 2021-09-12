@@ -43,7 +43,7 @@ class Booking
      *
      * @return string
      */
-    public function getTenantId() :string
+    public function getTenantId(): string
     {
         return $this->tenant_id;
     }
@@ -53,7 +53,7 @@ class Booking
      *
      * @return string
      */
-    public function getFirstName() :string
+    public function getFirstName(): string
     {
         return $this->first_name;
     }
@@ -63,7 +63,7 @@ class Booking
      *
      * @return string
      */
-    public function getLastName() :string
+    public function getLastName(): string
     {
         return $this->last_name;
     }
@@ -73,7 +73,7 @@ class Booking
      *
      * @return string
      */
-    public function getEmail() :string
+    public function getEmail(): string
     {
         return $this->email;
     }
@@ -83,7 +83,7 @@ class Booking
      *
      * @return string
      */
-    public function getPhoneNo() :string
+    public function getPhoneNo(): string
     {
         return $this->phone_no;
     }
@@ -93,7 +93,7 @@ class Booking
      *
      * @return DateTime
      */
-    public function getDateTime() :DateTime
+    public function getDateTime(): DateTime
     {
         return $this->dateTime;
     }
@@ -103,7 +103,7 @@ class Booking
      *
      * @return string
      */
-    public function getPropertyId() :string
+    public function getPropertyId(): string
     {
         return $this->property_id;
     }
@@ -113,9 +113,9 @@ class Booking
      *
      * @return bool
      */
-    public function isInvalidBooking() :bool
+    public function isInvalidBooking(): bool
     {
-        if($this->dateTime->format('d') == $this->dateTime->format('t'))
+        if ($this->dateTime->format('d') == $this->dateTime->format('t'))
         {
             return true;
         }
@@ -129,9 +129,9 @@ class Booking
      * @param  Booking $prevBooking
      * @return bool
      */
-    public function isBookingConflict(Booking $prevBooking) :bool
+    public function isBookingConflict(Booking $prevBooking): bool
     {
-        if($prevBooking->getDateTime() == $this->dateTime && $prevBooking->getPropertyId() == $this->property_id)
+        if ($prevBooking->getDateTime() == $this->dateTime && $prevBooking->getPropertyId() == $this->property_id)
         {
             return false;
         }
@@ -140,7 +140,7 @@ class Booking
         $diff = date_diff($this->dateTime, $prevBooking->getDateTime());
         $minutesDiff = ($diff->h * 60) + $diff->m;
 
-        if($minutesDiff >= 60)
+        if ($minutesDiff >= 60)
         {
             return false;
         }
