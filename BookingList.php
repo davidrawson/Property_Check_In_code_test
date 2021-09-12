@@ -4,8 +4,10 @@
  * BookingList
  */
 class BookingList
-{
+{    
+    /** @var array $bookings */
     private $bookings = [];
+    /** @var string $filename */
     private string $filename;
     
     /**

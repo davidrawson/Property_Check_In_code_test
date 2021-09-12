@@ -5,13 +5,21 @@
  */
 class Booking 
 {
+    /** @var int $tenant_id */
     protected int $tenant_id;
+    /** @var int $first_name */
     protected string $first_name;
+    /** @var int $last_name */
     protected string $last_name;
+    /** @var int $email */
     protected string $email;
+    /** @var int $phone_no */
     protected string $phone_no;
+    /** @var int $dateTime */
     protected DateTime $dateTime;
+    /** @var int $iproperty_id */
     protected int $property_id;
+    /** @var int MINUTES_IN_HOUR */
     protected const MINUTES_IN_HOUR = 60;
         
     /**
