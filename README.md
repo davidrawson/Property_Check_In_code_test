@@ -11,7 +11,7 @@ Run tests
 
 `phpunit BookingListTest.php`
 
-`phpunit CreateCheckInsListsTest`
+`phpunit CreateCheckInsListsTest.php`
 
 CLI command to run the class 
 
